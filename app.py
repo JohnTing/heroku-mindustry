@@ -4,8 +4,8 @@ from flask import Flask
 import os
 
 
-subprocess.Popen(["localtonet udptcp 6567"])
 subprocess.Popen(["echo host | java -jar mindustry-server/server.jar"])
+subprocess.Popen(["localtonet udptcp 6567"])
 
 port = int(os.environ.get('PORT', 17995))
 
