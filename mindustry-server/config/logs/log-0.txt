@@ -1,5 +1,0 @@
-[06-14-2022 10:29:35] [I] Server loaded. Type 'help' for help.
-[06-14-2022 10:29:39] [I] Randomized next map to be Maze.
-[06-14-2022 10:29:39] [I] Loading map...
-[06-14-2022 10:29:40] [I] Map loaded.
-[06-14-2022 10:29:40] [I] Opened a server on port 6567.
