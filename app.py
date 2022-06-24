@@ -5,9 +5,9 @@ import os
 
 token = os.environ.get("token")
 
-subprocess.Popen(["echo host | java -jar mindustry-server/server.jar"])
-subprocess.Popen(["./localtonet authtoken ${token}"])
-subprocess.Popen(["localtonet udptcp 6567"])
+subprocess.Popen(["echo host | java -jar mindustry-server/server.jar"], shell=True)
+subprocess.Popen(["./localtonet authtoken ${token}"], shell=True)
+subprocess.Popen(["localtonet udptcp 6567"], shell=True)
 
 port = int(os.environ.get('PORT', 17995))
 
