@@ -3,7 +3,11 @@ import subprocess
 from flask import Flask
 import os
 
+import psutil
+
 token = os.environ.get("token")
+
+
 
 subprocess.Popen(["echo host | java -jar mindustry-server/server.jar"], shell=True)
 subprocess.Popen(["./localtonet authtoken ${token}"], shell=True)
@@ -16,7 +20,16 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+
+    datastrs = [
+        psutil.cpu_percent(interval=1, percpu=True), 
+        psutil.virtual_memory(), 
+        psutil.swap_memory()
+    ]
+
+
+
+    return "<p>Hello, World!</p>" + "<br/>".join(datastrs)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=port)
