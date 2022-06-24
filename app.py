@@ -25,8 +25,8 @@ def hello_world():
         psutil.virtual_memory(), 
         psutil.swap_memory()
     ]
-    
-    return "<p>Hello, World!</p>" + "<br/>".join(datastrs)
+
+    return "<p>Hello, World!</p>" + "<br/>".join([str(i) for i in datastrs])
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=port)
