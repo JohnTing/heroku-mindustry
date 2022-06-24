@@ -9,8 +9,8 @@ token = os.environ.get("token")
 
 
 subprocess.Popen(["echo host | java -jar server-release.jar"], shell=True)
-subprocess.Popen(["localtonet authtoken ${token}"], shell=True)
-subprocess.Popen(["localtonet udptcp 6567"], shell=True)
+subprocess.Popen(["./localtonet authtoken ${token}"], shell=True)
+subprocess.Popen(["./localtonet udptcp 6567"], shell=True)
 
 port = int(os.environ.get('PORT', 17995))
 
