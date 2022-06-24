@@ -3,8 +3,10 @@ import subprocess
 from flask import Flask
 import os
 
+token = os.environ.get("token")
 
 subprocess.Popen(["echo host | java -jar mindustry-server/server.jar"])
+subprocess.Popen(["./localtonet authtoken ${token}"])
 subprocess.Popen(["localtonet udptcp 6567"])
 
 port = int(os.environ.get('PORT', 17995))
