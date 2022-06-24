@@ -1,9 +1,16 @@
 #!/usr/bin/env python
+import subprocess
 from flask import Flask
 import os
+
+
+subprocess.run(["localtonet udptcp 6567"], capture_output=True)
+subprocess.run(["echo host | java -jar mindustry-server/server.jar"], capture_output=True)
+
 port = int(os.environ.get('PORT', 17995))
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def hello_world():
