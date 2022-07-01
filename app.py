@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from typing import Dict
 from gevent import monkey
 #gevent
 monkey.patch_all()
@@ -14,7 +15,7 @@ import psutil
 
 from flask_socketio import SocketIO, emit, send
 
-
+maxLogLine = 1000
 
 async_mode = 'gevent'
 # async_mode = 'threading'
@@ -38,16 +39,29 @@ if token:
     subprocess.Popen(["./localtonet udptcp 6567"], shell=True)
 logs = []
 
+logFromStart = []
+
 thread = None
 thread_lock = threading.Lock()
 
+
+@socketio.on('command')
+def commandEvent(command: Dict):
+    if 'text' in command:
+
+        mindustryProcess.stdin.write(command["text"] + "\n")
+        mindustryProcess.stdin.flush()
+        emit('logEvent', {'text': f'{request.remote_addr}:${command["text"]}\n'})
+
 @socketio.on('connect')
 def test_connect(auth):
+    
     global thread
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(background_thread)
-    emit('logEvent', {'data': 'Connected', 'count': 0})
+
+    emit('logEvent', {'text': f'{request.remote_addr} is connected.\n', 'count': 0})
 
 
 
@@ -55,7 +69,10 @@ def background_thread():
     line = 'start:\n'
     while line:
         line = mindustryProcess.stdout.readline()
-        socketio.emit('logEvent', {'data': line})
+        logFromStart.append(line)
+        if len(logFromStart) > maxLogLine:
+            logFromStart.pop()
+        socketio.emit('logEvent', {'text': line})
         print(line)
 
 def readLog():
@@ -72,13 +89,26 @@ def readLog():
 
 @app.route("/")
 def hello_world():
-    datastrs = [
+    psutilText = ''
+    """
+    psutilData = [
         psutil.cpu_percent(interval=1, percpu=True), 
         psutil.virtual_memory(), 
         psutil.swap_memory()
     ]
+    psutilText = '\n'.join([str(i) for i in psutilData])
+    
+
+    logText = 'logText\n'
+    with open('./config/logs/log-0.txt') as f:
+        logText = f.readlines()
+    logText =  ''.join(logText[-10:])
+    """
+    logText =  ''.join(logFromStart[-10:])
+    
+
     # return "<p>Hello, World!</p>" + "<br/>".join([str(i) for i in datastrs])
-    return render_template('index.html', async_mode=socketio.async_mode)
+    return render_template('index.html', async_mode=socketio.async_mode, logText=logText, psutilText=psutilText)
 
 @app.route("/i")
 def write():
