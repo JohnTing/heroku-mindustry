@@ -2,3 +2,4 @@ flask
 psutil
 gevent
 flask_socketio
+gevent-websocket
