@@ -23,7 +23,7 @@ async_mode = 'gevent'
 
 port = int(os.environ.get('PORT', 17995))
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
+app.config['SECRET_KEY'] = 'secret!mindustry'
 socketio = SocketIO(app, async_mode=async_mode, logger=True)
 
 
