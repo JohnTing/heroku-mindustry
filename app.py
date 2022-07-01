@@ -5,11 +5,10 @@ from gevent import monkey
 #gevent
 monkey.patch_all()
 
-from socket import SocketIO
 import subprocess
 import threading
 import time
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request
 import os
 import psutil
 
@@ -22,7 +21,6 @@ async_mode = 'gevent'
 # async_mode = 'eventlet'
 # async_mode = 'gevent'
 
-
 port = int(os.environ.get('PORT', 17995))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -34,9 +32,10 @@ mindustryProcess.stdin.write("host\n")
 mindustryProcess.stdin.flush()
 
 token = os.environ.get("token")
+localtonetProcess = None
 if token:
     subprocess.Popen(["./localtonet authtoken ${token}"], shell=True)
-    subprocess.Popen(["./localtonet udptcp 6567"], shell=True)
+    localtonetProcess = subprocess.Popen(["./localtonet udptcp 6567"], shell=True, stdout=subprocess.PIPE, universal_newlines=True)
 logs = []
 
 logFromStart = []
