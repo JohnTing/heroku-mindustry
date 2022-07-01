@@ -32,7 +32,6 @@ mindustryProcess.stdin.write("host\n")
 mindustryProcess.stdin.flush()
 
 token = os.environ.get("token")
-localtonetProcess = None
 if token:
     subprocess.Popen([f"./localtonet authtoken {token}"], shell=True)
     subprocess.Popen(["./localtonet udptcp 6567"], shell=True)
@@ -116,8 +115,11 @@ def write():
         mindustryProcess.stdin.write(myinput + "\n")
         mindustryProcess.stdin.flush()
     out = "<br>".join(logs)
-    
     return out 
+
+@app.route("/ping")
+def ping():
+    return 'pong'
 
 if __name__ == "__main__":
     socketio.run(app, port=port)
