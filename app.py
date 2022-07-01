@@ -34,7 +34,7 @@ mindustryProcess.stdin.flush()
 token = os.environ.get("token")
 localtonetProcess = None
 if token:
-    subprocess.Popen(["./localtonet authtoken ${token}"], shell=True)
+    subprocess.Popen([f"./localtonet authtoken {token}"], shell=True)
     subprocess.Popen(["./localtonet udptcp 6567"], shell=True)
 logs = []
 
