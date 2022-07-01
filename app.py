@@ -35,14 +35,13 @@ token = os.environ.get("token")
 localtonetProcess = None
 if token:
     subprocess.Popen(["./localtonet authtoken ${token}"], shell=True)
-    localtonetProcess = subprocess.Popen(["./localtonet udptcp 6567"], shell=True, stdout=subprocess.PIPE, universal_newlines=True)
+    subprocess.Popen(["./localtonet udptcp 6567"], shell=True)
 logs = []
 
 logFromStart = []
 
 thread = None
 thread_lock = threading.Lock()
-
 
 @socketio.on('command')
 def commandEvent(command: Dict):
