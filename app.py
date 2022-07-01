@@ -15,6 +15,7 @@ import psutil
 from flask_socketio import SocketIO, emit, send
 
 maxLogLine = 1000
+returnLogLine = 100
 
 async_mode = 'gevent'
 # async_mode = 'threading'
@@ -34,6 +35,7 @@ mindustryProcess.stdin.flush()
 token = os.environ.get("token")
 if token:
     subprocess.Popen([f"./localtonet authtoken {token}"], shell=True)
+else:
     subprocess.Popen(["./localtonet udptcp 6567"], shell=True)
 logs = []
 
@@ -59,8 +61,6 @@ def test_connect(auth):
             thread = socketio.start_background_task(background_thread)
 
     emit('logEvent', {'text': f'{request.remote_addr} is connected.\n', 'count': 0})
-
-
 
 def background_thread():
     line = 'start:\n'
@@ -101,7 +101,7 @@ def hello_world():
         logText = f.readlines()
     logText =  ''.join(logText[-10:])
     """
-    logText =  ''.join(logFromStart[-10:])
+    logText =  ''.join(logFromStart[-returnLogLine:])
     
 
     # return "<p>Hello, World!</p>" + "<br/>".join([str(i) for i in datastrs])
